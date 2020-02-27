@@ -3,6 +3,7 @@
 from flask import Flask, render_template, redirect, url_for, request, flash, make_response
 from math import factorial,sqrt 
 import numpy as np
+import funciones as fn
 #Se crea un objeto app de flask, es el objeto inicial con el cual se va a lanzar el framework 
 app = Flask(__name__)
 #Siempre es necesario inicializar la sesion para que no existan erroes 
@@ -18,6 +19,9 @@ def indexPage():
 def fnBinomial():
     return render_template("binomial.html")
 
+@app.route("/hiper")
+def fnHiper():
+    return render_template("hipergeometrica.html")
 
 @app.route("/calcularBinomial", methods = ['POST'])
 def calcularBinomial():
@@ -97,6 +101,24 @@ def calcularBinomial():
     else:
         flash('El valor menor o mayor de exitos deseados debe de ser menor al tamaño de la muestra ')
         return redirect(url_for('fnBinomial'))
+
+@app.route('/calculoHiper', methods = ['POST'])
+def calcularHiper():
+    if request.method == 'POST':
+        n = int(request.form['muestra'])
+        N = int(request.form['N'])
+        T = int(request.form['T'])
+        x1 = int(request.form['x1'])
+        x2 = int(request.form['x2'])
+
+        resultados,grafica,total= fn.probabilidadHiper(N,T,n,x1,x2)
+        media = fn.mediaHiper(n,N,T)
+        desv = fn.desvHiper(n, T, N)
+        print(resultados)
+        print(grafica)
+        print(media)
+        print(desv)
+        return render_template('resultadoHiper.html', data = resultados, grafica=grafica, media=media, desv=desv,total=total)
 
 
 @app.route('/cookie')            
