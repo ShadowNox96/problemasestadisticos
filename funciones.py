@@ -1,5 +1,5 @@
 import numpy as np
-from math import factorial, sqrt
+from math import factorial, sqrt, e
 
 def probabilidadHiper(N,T,n,x1,x2):
     rango = range(x1,x2+1,1)
@@ -25,4 +25,26 @@ def desvHiper(n,T,N):
     return d
 
 
+def sesgoCurtosis(p,n):
+    q= 1-p 
+    #Calculo el sesgo
+    sesgo = (q-p)/sqrt(n*p*q)
+                
+    #Calculo de la curtosis
+    curtosis =3+((1-(6*p*q))/sqrt(n*p*q))
 
+    return sesgo,curtosis
+
+def probPoisson(x1,x2,media):
+    result = []
+    rango = range(x1,x2+1,1)
+    tProb = 0
+    #Empiezo la grafica
+    grafica = '{"cols": [{"id":"","label":"X","pattern":"","type":"number"},{"id":"","label":"P","pattern":"","type":"number"}],"rows": ['
+    for x in rango:
+        p = (media ** x)/(factorial(x) * e**(media))
+        result.append([x,p])
+        grafica = grafica + '{"c":[{"v":'+str(x)+',"f":null},{"v":'+str(p)+',"f":null}]},'
+        tProb = tProb+p
+    grafica = grafica + ']}'
+    return result, grafica,tProb

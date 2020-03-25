@@ -36,7 +36,7 @@ def calcularBinomial():
         n = int(request.form['muestra'])
         x1 = int(request.form['x1'])
         x2 = int(request.form['x2'])
-        p = int(request.form['p'])
+        p = float(request.form['p'])
         q = 100-p
         try:
             #trata de extraer el valor de N
@@ -87,11 +87,8 @@ def calcularBinomial():
                 grafica = grafica + '{"c":[{"v":'+str(x)+',"f":null},{"v":'+str(resultado)+',"f":null}]},'
             grafica = grafica + ']}'
 
-            #Calculo el sesgo
-            sesgo = (q-p)/sqrt(n*p*q)
-                
-            #Calculo de la curtosis
-            curtosis =3+((1-(6*p*q))/sqrt(n*p*q))
+            #Calculo el sesgo y curtosis
+            sesgo,curtosis = fn.sesgoCurtosis(p,n)
                 
             return render_template('resultadoBinomial.html', data = resultados, g = grafica, suma= suma, media= media, desv= desv, fc= fc, sesgo = sesgo, curtosis=curtosis, mediana= mediana)
 
@@ -114,12 +111,23 @@ def calcularHiper():
         resultados,grafica,total= fn.probabilidadHiper(N,T,n,x1,x2)
         media = fn.mediaHiper(n,N,T)
         desv = fn.desvHiper(n, T, N)
-        print(resultados)
-        print(grafica)
-        print(media)
-        print(desv)
-        return render_template('resultadoHiper.html', data = resultados, grafica=grafica, media=media, desv=desv,total=total)
+        p = media/n
+        sesgo, curtosis = fn.sesgoCurtosis(p,n)
+        return render_template('resultadoHiper.html', data = resultados, grafica=grafica, media=media, desv=desv,total=total, sesgo=sesgo, curtosis=curtosis)
 
+@app.route('/poisson')
+def poissonPage():
+    return render_template('poisson.html')
+
+@app.route('/calcularPoisson', methods = ['POST'])
+def calcularPoisson():
+    if request.method == 'POST':
+        media = float(request.form['media'])
+        x1 = int(request.form['x1'])
+        x2 = int(request.form['x2'])
+        data,grafica,tProb = fn.probPoisson(x1,x2,media)
+
+        return render_template('resultPoisson.html', data= data, grafica = grafica, total = tProb )
 
 @app.route('/cookie')            
 def cookie(grafica):

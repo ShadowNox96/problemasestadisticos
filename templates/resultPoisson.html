@@ -1,7 +1,6 @@
 {% extends 'index.html' %}
-
 {% block title %}
-<title>Resultados</title>
+<title>Poisson</title>
 {% endblock %}
 
 {% block content %}
@@ -31,10 +30,6 @@
             </table>
             <h5><b>Suma total de probabilidades: {{total}}</b></h5>
             <br>
-            <h5><b>Media: {{media}}</b></h5>
-            <h5><b>Desviacion: {{desv}}</b></h5>
-            <h5><b>Sesgo: {{sesgo}}</b></h5>
-            <h5><b>Curtosis: {{curtosis}}</b></h5>
             <div id="curve_chart" class="offset-md-1" style="width: 850px; height: 500px"></div>
             <h1 class="datos" hidden>{{data}}</h1>
             
@@ -74,6 +69,4 @@
       chart.draw(data, options);
     }
   </script>
-
-
 {% endblock %}
