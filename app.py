@@ -1,5 +1,4 @@
 # Importamos la libreria
-# Para el proyecto
 
 from flask import Flask, render_template, redirect, url_for, request, flash, make_response
 from math import factorial, sqrt
@@ -48,8 +47,8 @@ def calcularBinomial():
             N = int(request.form['N'])
         except:
             # No hay valor de N hacer con poblacion infinita
-        media = n*p/100
-        desv = sqrt(n*p*q)/100
+            media = n*p/100
+            desv = sqrt(n*p*q)/100
 
         if N != 0 and (n/N)*100 > 5:
             # EsPoblacion Infinita
@@ -138,6 +137,27 @@ def calcularPoisson():
         data, grafica, tProb = fn.probPoisson(x1, x2, media)
 
         return render_template('resultPoisson.html', data=data, grafica=grafica, total=tProb)
+
+
+# Colas de espera
+@app.route('/mm1')
+def colasMm1():
+    return render_template('colasmm1.html')
+
+
+@app.route('/calcularmm1', methods=['POST'])
+def calcularColasMm1():
+    if request.method == 'POST':
+        rservicio = int(request.form['rservicio'])
+        tllegada = int(request.form['tllegada'])
+        n1 = int(request.form['n1'])
+        n2 = int(request.form['n2'])
+
+        lq, wq, probUtilizacion = fn.mm1Lq(rservicio, tllegada)
+        ls, ws = fn.mm1Ls(rservicio, tllegada)
+        data = fn.nUnidadesSistema(tllegada, rservicio, n1, n2)
+
+        return render_template('resultadocolasmm1.html', data=data, lq=lq, wq=wq, ls=ls, ws=ws, probUtilizacion=probUtilizacion)
 
 
 @app.route('/cookie')
