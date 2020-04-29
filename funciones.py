@@ -72,11 +72,11 @@ def mm1Ls(rservicio, tllegada):
 
 
 def nUnidadesSistema(tllegada, rservicio, n1, n2):
-    rango = range(n1, n2, 1)
+    rango = range(n1, n2+1, 1)
     result = []
 
     for x in rango:
-        pn = (1-(tllegada/rservicio)) * (tllegada/rservicio) * x
+        pn = (1-(tllegada/rservicio)) * (tllegada/rservicio) ** x
         result.append([x, pn])
 
     return result
