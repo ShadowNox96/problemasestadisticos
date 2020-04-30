@@ -29,6 +29,7 @@
                 
             </table>
             <h5><b>Suma total de probabilidades: {{total}}</b></h5>
+            <h5><b>Desviación: {{desv}}</b></h5>
             <br>
             <div id="curve_chart" class="offset-md-1" style="width: 850px; height: 500px"></div>
             <h1 class="datos" hidden>{{data}}</h1>
@@ -64,7 +65,7 @@
       };
       
 
-      var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+      var chart = new google.visualization.AreaChart(document.getElementById('curve_chart'));
 
       chart.draw(data, options);
     }

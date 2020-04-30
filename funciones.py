@@ -80,3 +80,11 @@ def nUnidadesSistema(tllegada, rservicio, n1, n2):
         result.append([x, pn])
 
     return result
+
+def wqMayorTiempoCola(probUtilizacion, tiempo, rservicio):
+    probTiempo = round((probUtilizacion*(e)**(-rservicio/60*(1-probUtilizacion)*tiempo) * 100),4)
+    return probTiempo
+
+def wsMayorTiempoSistema(rservicio, probUtilizacion, tiempo):
+    probTiempo = round(((e)**((-rservicio/60)*(1 - probUtilizacion)*tiempo)*100),4)
+    return probTiempo

@@ -1,6 +1,6 @@
 {% extends 'index.html' %}
 {% block title %}
-<title>Teorema de Colas</title>
+<title>Colas de espera</title>
 {% endblock %}
 
 {% block content %}
@@ -37,8 +37,12 @@
             <h5>Tiempo de espera Ws: <strong>{{ws}} hrs.</strong></h5>
             <br>
             <h5>Probabilidad de utilizacion (&rho;): <strong>{{probUtilizacion}} </strong></h5>
-
-
+            <br>
+            <h5>Probabilidad de ocio: <strong>{{probOcio}} </strong></h5>
+            <br>
+            <h5>P(Wq > {{tiempo}}) mins en la cola: <strong>{{probTiempoCola}} % </strong></h5>
+            <br>
+            <h5>P(Ws > {{tiempo}}) mins en el sistema: <strong>{{probTiempoSistema}} % </strong></h5>
             <br>
             <div id="curve_chart" class="offset-md-1" style="width: 850px; height: 500px"></div>
             <h1 class="datos" hidden>{{data}}</h1>

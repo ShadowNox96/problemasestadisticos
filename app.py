@@ -114,13 +114,18 @@ def calcularHiper():
         T = int(request.form['T'])
         x1 = int(request.form['x1'])
         x2 = int(request.form['x2'])
+        mediana =0
+        rango = []
 
         resultados, grafica, total = fn.probabilidadHiper(N, T, n, x1, x2)
         media = fn.mediaHiper(n, N, T)
         desv = fn.desvHiper(n, T, N)
         p = media/n
         sesgo, curtosis = fn.sesgoCurtosis(p, n)
-        return render_template('resultadoHiper.html', data=resultados, grafica=grafica, media=media, desv=desv, total=total, sesgo=sesgo, curtosis=curtosis)
+        rango = range(x1, x2+1, 1)
+        mediana = np.median(rango)
+        print(media , mediana)
+        return render_template('resultadoHiper.html', data=resultados, grafica=grafica, media=media, desv=desv, total=total, sesgo=sesgo, curtosis=curtosis, mediana=mediana)
 
 
 @app.route('/poisson')
@@ -135,8 +140,8 @@ def calcularPoisson():
         x1 = int(request.form['x1'])
         x2 = int(request.form['x2'])
         data, grafica, tProb = fn.probPoisson(x1, x2, media)
-
-        return render_template('resultPoisson.html', data=data, grafica=grafica, total=tProb)
+        desv= sqrt(media)
+        return render_template('resultPoisson.html', data=data, grafica=grafica, total=tProb,desv=desv)
 
 
 # Colas de espera
@@ -152,12 +157,22 @@ def calcularColasMm1():
         tllegada = int(request.form['tllegada'])
         n1 = int(request.form['n1'])
         n2 = int(request.form['n2'])
+        try:
+            tiempo = float(request.form['tiempo'])
+        except:
+            tiempo = 0
 
         lq, wq, probUtilizacion = fn.mm1Lq(rservicio, tllegada)
         ls, ws = fn.mm1Ls(rservicio, tllegada)
         data = fn.nUnidadesSistema(tllegada, rservicio, n1, n2)
-
-        return render_template('resultadocolasmm1.html', data=data, lq=lq, wq=wq, ls=ls, ws=ws, probUtilizacion=probUtilizacion)
+        probOcio = round((1-probUtilizacion),4)
+        if tiempo != 0:
+            probTiempoCola = fn.wqMayorTiempoCola(probUtilizacion, tiempo, rservicio)
+            probTiempoSistema = fn.wsMayorTiempoSistema(rservicio, probUtilizacion, tiempo)
+        else:
+            probTiempoCola = 0
+            probTiempoSistema = 0
+        return render_template('resultadocolasmm1.html', data=data, lq=lq, wq=wq, ls=ls, ws=ws, probUtilizacion=probUtilizacion, probOcio = probOcio, probTiempoCola = probTiempoCola,tiempo = tiempo, probTiempoSistema=probTiempoSistema)
 
 
 @app.route('/cookie')

@@ -31,12 +31,42 @@
             </table>
             <h5><b>Suma total de probabilidades: {{total}}</b></h5>
             <br>
+             <!--Tipos de sesgos-->
+            <!--Sesgo negativo-->
+            {% if media < mediana%}
+            
+            <div class="alert alert-primary alert-dismissible col-md">
+                <button class="close" type="button" data-dismiss="alert">&times;</button>
+                <strong>Sesgo Negativo</strong>
+                
+            </div>
+            {% endif %}
+            <!--Sesgo nulo-->
+            {% if media == mediana %}
+            
+            <div class="alert alert-primary alert-dismissible col-md">
+                <button class="close" type="button" data-dismiss="alert">&times;</button>
+                <strong>Sesgo Nulo</strong>
+                
+            </div>
+            {% endif %}
+            <!--Sesgo positivo-->
+            {% if media > mediana %}
+            
+            <div class="alert alert-primary alert-dismissible col-md">
+                <button class="close" type="button" data-dismiss="alert">&times;</button>
+                <strong>Sesgo Positivo</strong>
+                
+            </div>
+            {% endif %}
             <h5><b>Media: {{media}}</b></h5>
             <h5><b>Desviacion: {{desv}}</b></h5>
             <h5><b>Sesgo: {{sesgo}}</b></h5>
             <h5><b>Curtosis: {{curtosis}}</b></h5>
+            <h5><b>Mediana: {{mediana}}</b></h5>
             <div id="curve_chart" class="offset-md-1" style="width: 850px; height: 500px"></div>
             <h1 class="datos" hidden>{{data}}</h1>
+
             
 
         </div>
